@@ -1,54 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vite App</title>
-  <link href="
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atomic Swap - Admin</title>
+    <link
+      href="
     https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.min.css
-  " rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
-  <link rel="stylesheet" href="css/style.scss">
-</head>
-<body data-theme="dark">
-<div class="fixed top-6 right-8">
-  <include src="src/components/theme-controller.html"></include>
-</div>
+  "
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="css/style.scss" />
+  </head>
+  <body data-theme="dark">
+    <div class="fixed top-6 right-8">
+      <include src="src/components/theme-controller.html"></include>
+    </div>
 
-<include src="src/components/utils.html"></include>
+    <include src="src/components/utils.html"></include>
 
-<div data-tabs-container id="app" class="p-6 flex flex-col gap-10 items-center pt-20 sm:pt-16">
-  <p class="text-2xl font-medium">Atomic Native Swaps - admin</p>
-  <button class="btn" onclick="docs_modal.showModal()">Read docs</button>
+    <div
+      data-tabs-container
+      id="app"
+      class="p-6 flex flex-col gap-10 items-center pt-20 sm:pt-16"
+    >
+      <p class="text-2xl font-medium">Atomic Native Swaps - Admin</p>
+      <button class="btn" onclick="docs_modal.showModal()">Read docs</button>
 
-  <div data-tabs-nav role="tablist" class="tabs tabs-boxed">
-    <a data-tab-target="create-swap-tab" role="tab" class="tab tab-active">Create swap</a>
-    <a data-tab-target="withdraw-tab" role="tab" class="tab">Withdraw</a>
-  </div>
+      <div data-tabs-nav role="tablist" class="tabs tabs-boxed">
+        <a data-tab-target="create-swap-tab" role="tab" class="tab tab-active"
+          >Create swap</a
+        >
+        <a data-tab-target="withdraw-tab" role="tab" class="tab">Withdraw</a>
+      </div>
 
-  <include src="src/components/create-swap-form.html"></include>
-  <include src="src/components/form.html"></include>
-</div>
+      <include src="src/components/create-swap-form.html"></include>
+      <include src="src/components/form.html"></include>
+    </div>
 
-<include src="src/components/modals/docs.html"></include>
+    <include src="src/components/modals/docs.html"></include>
 
-<div id="toast-container"></div>
+    <div id="toast-container"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/just-validate@4.3.0/dist/just-validate.production.min.js"></script>
-<script src="
+    <script src="https://cdn.jsdelivr.net/npm/just-validate@4.3.0/dist/just-validate.production.min.js"></script>
+    <script src="
 https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.min.js
 "></script>
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
-<script
-    crossorigin="anonymous"
-    integrity="sha512-yhbfKyAjj1d7DG9IdorCr13o6VVoaRDdYww3u9oRDbOiMw7UkhI607wB54fXUxA9s22Qr8ltpiv18rSe7QifEA=="
-    referrerpolicy="no-referrer"
-    src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.0/ethers.umd.min.js"
-></script>
-<script src="./js/abi.js"></script>
-<script src="./main.js"></script>
-<script type="module" src="./js/routing.js"></script>
-<script src="./js/helpers.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+    <script
+      crossorigin="anonymous"
+      integrity="sha512-yhbfKyAjj1d7DG9IdorCr13o6VVoaRDdYww3u9oRDbOiMw7UkhI607wB54fXUxA9s22Qr8ltpiv18rSe7QifEA=="
+      referrerpolicy="no-referrer"
+      src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.0/ethers.umd.min.js"
+    ></script>
+    <script src="./js/abi.js"></script>
+    <script src="./main.js"></script>
+    <script type="module" src="./js/routing.js"></script>
+    <script src="./js/helpers.js"></script>
+  </body>
 </html>

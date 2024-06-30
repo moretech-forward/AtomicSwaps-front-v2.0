@@ -132,60 +132,63 @@ function removeOverlay(element_id) {
 // setTheme();
 
 function shortenAddress(address) {
-  if (address.length < 10) return address
-  return address.slice(0, 6) + '...' + address.slice(-5)
+  if (address.length < 10) return address;
+  return address.slice(0, 6) + "..." + address.slice(-5);
 }
 
 // ctc
 const check_before_connection = setInterval(async () => {
   if (await provider.getNetwork()) {
     clearInterval(check_before_connection);
-    setClipboard()
+    setClipboard();
   }
-}, 500)
+}, 500);
 
 const setClipboard = () => {
-  const ctcs = document.querySelectorAll('[data-ctc]');
-  ctcs.forEach(ctc_el => {
-    ctc_el.addEventListener('click', e => {
-      const ctc_text = ctc_el.getAttribute('data-ctc-content')
-      navigator.clipboard.writeText(ctc_text).then(() => {
-        showToast('Copied to clipboard', 'success');
-      }).catch(() => {
-        showToast('Error copied to clipboard, try again!', 'warning');
-      });
+  const ctcs = document.querySelectorAll("[data-ctc]");
+  ctcs.forEach((ctc_el) => {
+    ctc_el.addEventListener("click", (e) => {
+      const ctc_text = ctc_el.getAttribute("data-ctc-content");
+      navigator.clipboard
+        .writeText(ctc_text)
+        .then(() => {
+          showToast("Copied to clipboard", "success");
+        })
+        .catch(() => {
+          showToast("Error copied to clipboard, try again!", "warning");
+        });
     });
-    ctc_el.addEventListener('mouseenter', e => {
+    ctc_el.addEventListener("mouseenter", (e) => {
       var range = document.createRange();
       range.selectNode(ctc_el);
       window.getSelection().removeAllRanges();
       window.getSelection().addRange(range);
     });
-    ctc_el.addEventListener('mouseleave', e => {
+    ctc_el.addEventListener("mouseleave", (e) => {
       window.getSelection().removeAllRanges();
     });
-  })
-}
+  });
+};
 
 const setTheme = () => {
-  const selected_theme = localStorage.getItem('theme') || 'dark';
-  document.querySelector('body').setAttribute('data-theme', selected_theme);
+  const selected_theme = localStorage.getItem("theme") || "dark";
+  document.querySelector("body").setAttribute("data-theme", selected_theme);
 
-  theme_options.forEach(el => {
-    if (el.getAttribute('data-set-theme') === selected_theme) {
-      el.classList.add('active');
+  theme_options.forEach((el) => {
+    if (el.getAttribute("data-set-theme") === selected_theme) {
+      el.classList.add("active");
     } else {
-      el.classList.remove('active');
+      el.classList.remove("active");
     }
-  })
-}
-setTheme()
+  });
+};
+setTheme();
 
 function extractErrorReason(errorMessage) {
-  const regex = /reason="([^"]+)"/
-  const match = errorMessage.toString().match(regex)
+  const regex = /reason="([^"]+)"/;
+  const match = errorMessage.toString().match(regex);
   if (match && match[1]) {
-    return match[1]
+    return match[1];
   }
-  return null
+  return null;
 }

@@ -68,7 +68,19 @@ const setFormInfo = async () => {
   if (deadline === 0n) {
     setText("There's no deadline", "deadline_text");
   } else {
-    setText(date.toDateString() + " 23:59", "deadline_text");
+    let timestampInMilliseconds = Number(deadline) * 1000;
+    let date = new Date(timestampInMilliseconds);
+    let dateString = date
+      .toLocaleString("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })
+      .replace(",", "");
+    setText(dateString, "deadline_text");
   }
 
   setText(ethers.formatEther(await contract.amount()), "amount_text");
