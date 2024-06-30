@@ -6,10 +6,8 @@ window.onload = function () {
   });
 
   const withdraw_form = document.getElementById("form");
-  console.log();
   withdraw_form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log("efnekfjne");
     try {
       const deadline = await contract.deadline();
 

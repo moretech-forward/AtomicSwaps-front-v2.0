@@ -11,6 +11,11 @@ const setText = (text, id) => {
   }
 };
 
+const setColor = (color, id) => {
+  const span = document.getElementById(id);
+  span.style.color = color;
+};
+
 async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -67,6 +72,9 @@ const setFormInfo = async () => {
   const deadline = await contract.deadline();
   if (deadline === 0n) {
     setText("There's no deadline", "deadline_text");
+
+    setText("You can create a new swap", "can-swap-content");
+    setColor("green", "can-swap-content");
   } else {
     let timestampInMilliseconds = Number(deadline) * 1000;
     let date = new Date(timestampInMilliseconds);
@@ -81,6 +89,12 @@ const setFormInfo = async () => {
       })
       .replace(",", "");
     setText(dateString, "deadline_text");
+
+    setText(
+      "You can't create a new swap, wait for the current one to finish",
+      "can-swap-content"
+    );
+    setColor("red", "can-swap-content");
   }
 
   setText(ethers.formatEther(await contract.amount()), "amount_text");
