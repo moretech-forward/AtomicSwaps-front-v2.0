@@ -1,0 +1,31 @@
+<div class="card bg-base-100 w-96 shadow-2xl z-0" data-tab-content="create-swap-tab">
+  <form id="create-swap-form" class="space-y-4 card-body">
+    <div class="flex items-center gap-2">
+      <input id="is_initiator" name="is_initiator" type="checkbox" class="checkbox checkbox-sm" />
+      <label for="is_initiator" class="label-text">I am the initiator of the swap</label>
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label for="other_party" class="label-text">Other party</label>
+      <input id="other_party" name="other_party" type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+      <span class="help">Enter the address of the person who will be confirming the swap.</span>
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label for="swap_amount" class="label-text">Swap amount</label>
+      <input id="swap_amount" name="swap_amount" type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+      <span class="help">Enter the amount of tokens you wish to swap.</span>
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label for="key" class="label-text">Key</label>
+      <input id="key" name="key" type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+      <span class="help">Enter the key with which you can make a swap.</span>
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label for="deadline" class="label-text">Deadline</label>
+      <input id="deadline" name="deadline" type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+      <span class="help">Select the date during which you can make the swap.</span>
+    </div>
+    <button class="btn btn-primary mt-2">Submit</button>
+  </form>
+</div>
+
+<script src="/js/create-swap-form.js"></script>

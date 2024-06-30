@@ -1,0 +1,20 @@
+<div class="dropdown dropdown-end">
+  <div tabindex="0" class="btn m-1">Select theme</div>
+  <ul tabindex="0" class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+    <li><a data-set-theme="dark">Dark</a></li>
+    <li><a data-set-theme="light">Light</a></li>
+    <li><a data-set-theme="corporate">Corporate</a></li>
+    <li><a data-set-theme="dim">Dim</a></li>
+    <li><a data-set-theme="sunset">Sunset</a></li>
+  </ul>
+</div>
+
+<script>
+  const theme_options = document.querySelectorAll('[data-set-theme]')
+  theme_options.forEach(btn => {
+    btn.addEventListener('click', () => {
+      localStorage.setItem('theme', btn.getAttribute('data-set-theme'))
+      setTheme()
+    })
+  })
+</script>
