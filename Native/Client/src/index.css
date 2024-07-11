@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply bg-white dark:bg-gray-800 min-h-[1000px] text-black dark:text-white;
+}
+
+#default-tab-content {
+    @apply w-full px-4 sm:px-0 sm:w-[400px] -mt-2;
+}
+
+.overlay {
+    @apply bg-black/50;
+}
+
+.skeleton {
+    @apply bg-gray-200 rounded-md dark:bg-gray-700 animate-pulse;
+}
+
+.copy-badge {
+    @apply bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300 text-sm px-2 py-1 rounded-md font-medium transition duration-150 cursor-pointer;
+}

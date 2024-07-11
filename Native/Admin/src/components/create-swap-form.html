@@ -1,74 +1,212 @@
-<div
-  class="card bg-base-100 w-96 shadow-2xl z-0"
-  data-tab-content="create-swap-tab"
+<form
+  class="flex flex-col gap-4 relative w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+  id="create_swap_form"
 >
-  <form id="create-swap-form" class="space-y-4 card-body">
-    <div class="flex items-center gap-2">
-      <span id="can-swap-content"> </span>
-    </div>
-    <div class="flex items-center gap-2">
-      <input
-        id="is_initiator"
-        name="is_initiator"
-        type="checkbox"
-        class="checkbox checkbox-sm"
-      />
-      <label for="is_initiator" class="label-text"
-        >I am the initiator of the swap</label
-      >
-    </div>
-    <div class="form-control w-full max-w-xs">
-      <label for="other_party" class="label-text">Other party</label>
-      <input
-        id="other_party"
-        name="other_party"
-        type="text"
-        placeholder="Type here"
-        class="input input-bordered w-full max-w-xs"
-      />
-      <span class="help"
-        >Enter the address of the person who will be confirming the swap.</span
-      >
-    </div>
-    <div class="form-control w-full max-w-xs">
-      <label for="swap_amount" class="label-text">Swap amount</label>
-      <input
-        id="swap_amount"
-        name="swap_amount"
-        type="number"
-        min="0"
-        step="0.000001"
-        placeholder="Type here"
-        class="input input-bordered w-full max-w-xs"
-      />
-      <span class="help">Enter the amount of tokens you wish to swap.</span>
-    </div>
-    <div class="form-control w-full max-w-xs">
-      <label for="key" class="label-text">Key</label>
-      <input
-        id="key"
-        name="key"
-        type="text"
-        placeholder="Type here"
-        class="input input-bordered w-full max-w-xs"
-      />
-      <span class="help">Enter the key with which you can make a swap.</span>
-    </div>
-    <div class="form-control w-full max-w-xs">
-      <label for="deadline" class="label-text">Deadline</label>
-      <input
-        id="deadline"
-        name="deadline"
-        type="text"
-        placeholder="Type here"
-        class="input input-bordered w-full max-w-xs"
-      />
-      <span class="help"
-        >Select the date during which you can make the swap.</span
-      >
-    </div>
-    <button class="btn btn-primary mt-2">Create Swap</button>
-  </form>
-</div>
+  <p class="text-green-500 hidden" id="can_create_swap">
+    You can create a new swap
+  </p>
+  <p class="text-red-500 hidden" id="cant_create_swap">
+    You can't create a new swap, wait for the current one to finish
+  </p>
 
-<script src="/js/create-swap-form.js"></script>
+  <div class="flex items-center mb-2">
+    <input
+      class="text-blue-600 border-gray-200 rounded cursor-pointer shrink-0 mt-0-5 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+      id="flag"
+      name="flag"
+      type="checkbox"
+      value=""
+    />
+    <label
+      class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+      for="flag"
+      >I am initiator of the swap</label
+    >
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="other_party"
+      >Other party</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="other_party"
+      name="other_party"
+      placeholder="Type here"
+      required
+      type="text"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the address of the person who will be confirming the swap.
+    </p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="swap_amount"
+      >Swap amount</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="swap_amount"
+      name="swap_amount"
+      placeholder="Type here"
+      required
+      type="number"
+      min="0"
+      step="0.000001"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the amount of tokens you wish to swap.
+    </p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="key"
+      >Key</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="key"
+      name="key"
+      placeholder="Type here"
+      required
+      type="text"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the key with which you can make a swap.
+    </p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="deadline"
+      >Deadline</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="deadline"
+      name="deadline"
+      placeholder="Type here"
+      readonly
+      required
+      type="text"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Select the date during which you can make the swap.
+    </p>
+  </div>
+
+  <button
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+    type="submit"
+  >
+    Submit
+  </button>
+</form>
+
+<!--Add datepicker-->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    new AirDatepicker("#deadline", {
+      timepicker: true,
+      position: "top right",
+      minDate: dateFns.addHours(new Date(), 0),
+    });
+  });
+</script>
+
+<!--SET SWAP ACCESSIBILITY-->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const can_create = document.getElementById("can_create_swap");
+    const cant_create = document.getElementById("cant_create_swap");
+
+    setInterval(async () => {
+      if (contract) {
+        const deadline = await contract.deadline();
+
+        can_create.classList.add("hidden");
+        cant_create.classList.add("hidden");
+
+        if (deadline === 0n) {
+          can_create.classList.remove("hidden");
+        } else {
+          cant_create.classList.remove("hidden");
+        }
+      }
+    }, 1000);
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const create_swap_form = document.getElementById("create_swap_form");
+    create_swap_form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = new FormData(create_swap_form);
+
+      const flag = data.get("flag") === "";
+      const other_party = data.get("other_party");
+      const swap_amount = ethers.parseEther(data.get("swap_amount").toString());
+      let key = data.get("key");
+      const deadline = convertToTimestamp(data.get("deadline"));
+
+      if (!other_party || !swap_amount || !key || !deadline) {
+        notyf("Please fill all fields!", "error");
+        return;
+      }
+
+      if (flag) {
+        key = ethers.keccak256(ethers.toUtf8Bytes(key));
+      } else {
+        if (!ethers.isBytesLike(key)) {
+          notyf.error(
+            'Wrong key, you need to get a key in the format "0x..."!'
+          );
+          return;
+        }
+      }
+
+      let now = moment().add(3, "hours").unix();
+
+      console.log("Deadline timestamp", deadline);
+      console.log("Deadline now", now);
+      console.log("Initiator", flag);
+
+      // if (deadline < now) {
+      //   notyf.error("The deadline should start no earlier than in an hour!");
+      //   return;
+      // }
+
+      addOverlay("create_swap_form");
+
+      try {
+        const tx = await contract.createSwap(
+          other_party,
+          swap_amount,
+          key,
+          deadline,
+          flag,
+          {
+            value: swap_amount,
+          }
+        );
+
+        await tx.wait();
+        create_swap_form.reset();
+        notyf.success("Success swap!");
+        setFormInfo();
+      } catch (e) {
+        const reason = extractErrorReason(e);
+        console.log(e);
+        console.log(reason);
+        notyf.error("Failed to create a swap! " + reason);
+      } finally {
+        removeOverlay("create_swap_form");
+      }
+    });
+  });
+</script>
