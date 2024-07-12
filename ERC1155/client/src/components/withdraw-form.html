@@ -1,0 +1,339 @@
+<form
+  class="flex flex-col gap-4 relative w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+  id="withdraw_form"
+>
+  <p class="text-green-500 hidden" id="can_confirm">You can confirm the swap</p>
+  <p class="text-red-500 hidden" id="cant_confirm">
+    Deadline's over, you can't confirm the swap
+  </p>
+  <p class="text-red-500 hidden" id="no_swap">
+    There's no active swap right now
+  </p>
+  <ul class="list-disc space-y-2 pl-4 pr-2 text-sm marker:text-blue-500">
+    <li>
+      <p class="flex items-center justify-between">
+        Network: <span class="w-28 h-5 skeleton" id="network_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Chain ID: <span class="w-28 h-5 skeleton" id="chain_id_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Key: <span class="w-28 h-5 skeleton" id="key_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Deadline: <span class="w-28 h-5 skeleton" id="deadline_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Token ID: <span class="w-28 h-5 skeleton" id="token_id_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Amount: <span class="w-28 h-5 skeleton" id="token_amount_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Token address:
+        <span class="w-28 h-5 skeleton" id="token_addr_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Owner: <span class="w-28 h-5 skeleton" id="owner_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Asset: <span class="w-28 h-5 skeleton" id="asset_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Other Party:
+        <span class="w-28 h-5 skeleton" id="other_party_data"></span>
+      </p>
+    </li>
+    <li>
+      <p class="flex items-center justify-between">
+        Hash Key: <span class="w-28 h-5 skeleton" id="hash_key_data"></span>
+      </p>
+    </li>
+  </ul>
+
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="key"
+      >Key</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="key"
+      name="key"
+      placeholder="Type here"
+      required
+      type="text"
+    />
+  </div>
+
+  <button
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 transition duration-150"
+    type="submit"
+  >
+    Confirm swap
+  </button>
+</form>
+
+<!--SET CONFIRM SWAP ACCESSIBILITY-->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const can_confirm = document.getElementById("can_confirm");
+    const cant_confirm = document.getElementById("cant_confirm");
+    const no_swap = document.getElementById("no_swap");
+
+    setInterval(async () => {
+      if (contract) {
+        const deadline = await contract.deadline();
+
+        can_confirm.classList.add("hidden");
+        cant_confirm.classList.add("hidden");
+        no_swap.classList.add("hidden");
+
+        let now = moment().unix();
+        if (deadline == 0n) {
+          no_swap.classList.remove("hidden");
+        } else if (deadline < now && deadline != 0n) {
+          cant_confirm.classList.remove("hidden");
+        } else {
+          can_confirm.classList.remove("hidden");
+        }
+      }
+    }, 1000);
+  });
+</script>
+
+<!--ОБРАБОТКА ФОРМЫ WITHDRAW-->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const withdraw_form = document.getElementById("withdraw_form");
+    withdraw_form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(withdraw_form);
+      const key = formData.get("key");
+
+      if (!key || key === "") {
+        notyf.error("Please enter a key!");
+      } else {
+        addOverlay("withdraw_form");
+        try {
+          const deadline = await contract.deadline();
+          if (deadline === 0n) {
+            notyf.error("The swap is complete, there's nothing to comfirm");
+            return;
+          }
+
+          const tx = await contract.confirmSwap(key);
+          await tx.wait();
+          notyf.success("Success Confirm Swap!");
+          withdraw_form.reset();
+        } catch (err) {
+          console.log(err);
+
+          const reason = extractErrorReason(err);
+          console.log(reason);
+          if (reason) notyf.error(`Error confirm swap! ${reason}.`);
+          else notyf.error("Error confirm swap!");
+        } finally {
+          removeOverlay("withdraw_form");
+          setTimeout(() => {
+            setFormInfo();
+          }, 1000);
+        }
+      }
+    });
+  });
+</script>
+
+<!--ОТОБРАЖЕНИЕ ДАННЫХ-->
+<script>
+  // установка изначальных значений
+  const initialWithdrawData = {
+    network: {
+      value: "",
+      copy: "",
+    },
+    chain_id: {
+      value: "",
+      copy: "",
+    },
+    key: {
+      value: "",
+      copy: "",
+    },
+    deadline: {
+      value: "",
+      copy: "",
+    },
+    token_id: {
+      value: "",
+      copy: "",
+    },
+    token_amount: {
+      value: "",
+      copy: "",
+    },
+    token_addr: {
+      value: "",
+      copy: "",
+    },
+    owner: {
+      value: "",
+      copy: "",
+    },
+    other_party: {
+      value: "",
+      copy: "",
+    },
+    asset: {
+      value: "",
+      copy: "",
+    },
+    hash_key: {
+      value: "",
+      copy: "",
+    },
+  };
+
+  // прокся, которая обновляет вывод всех данных при изменении какого-либо значения
+  // Чтобы обновить данные, просто обновите значение window.withdraw_data.value = "your value"
+  window.withdraw_data = new Proxy(initialWithdrawData, {
+    set(target, property, value) {
+      target[property] = value;
+      for (const [key, value] of Object.entries(withdraw_data)) {
+        setText(value.value, value.copy, `${key}_data`);
+      }
+      return true; // Indicate success
+    },
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    window.withdraw_data.asset = {
+      value: "ERC1155",
+      copy: "ERC1155",
+    };
+  });
+
+  // функция, которая делает контент копируемым
+  // трогать ее не надо, она вызывается сама, при установке текста через setText()
+  const setCopyButtons = () => {
+    // Select all elements with the data-copy attribute
+    const copyButtons = document.querySelectorAll("[data-copy]");
+
+    // Iterate over each button
+    copyButtons.forEach((button) => {
+      // Clone the node to remove all previous event listeners
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+
+      // Add a new event listener to the cloned node
+      newButton.addEventListener("click", async () => {
+        const text = newButton.getAttribute("data-text");
+        if (text) {
+          try {
+            await navigator.clipboard.writeText(text);
+            notyf.success("Text copied successfully!");
+          } catch (err) {
+            notyf.error("Failed to copy text!");
+          }
+        }
+      });
+    });
+  };
+
+  // функция для установки текста
+  // text - отображаемый контрент
+  // text_to_copy - текст для копирования
+  // element_id - ID элемента для установки текста
+  const setText = (text, text_to_copy, element_id) => {
+    const el = document.getElementById(element_id);
+    if (text === "" || !text) {
+      el.className = "w-28 h-5 skeleton";
+      el.innerText = "";
+      el.removeAttribute("data-copy");
+      el.removeAttribute("data-text");
+      return;
+    }
+    el.className = "copy-badge";
+    el.setAttribute("data-copy", "");
+    el.setAttribute("data-text", text_to_copy);
+    el.innerText = text;
+
+    setCopyButtons();
+  };
+
+  const setWithdrawData = (text, copy_text, name) => {
+    window.withdraw_data[name] = {
+      value: text,
+      copy: copy_text,
+    };
+  };
+</script>
+
+<!--ПОЛУЧЕНИЕ ДАННЫХ ИЗ КОНТРАКТА-->
+<script>
+  const setFormInfo = async () => {
+    const network = await provider.getNetwork();
+
+    console.log("ewfefewfjn ");
+
+    const network_name = await getNetworkName(network);
+    setWithdrawData(network_name, network_name, "network");
+
+    const chain_id = network.chainId.toString();
+    setWithdrawData(chain_id, chain_id, "chain_id");
+
+    const result_key = await contract.key();
+    const key = result_key === "" ? "There`s no key" : result_key;
+    setWithdrawData(key, key, "key");
+
+    const deadline = (await contract.deadline()) * 1000n;
+    if (deadline === 0n) {
+      setWithdrawData("There's no deadline", "There's no deadline", "deadline");
+    } else {
+      const deadlineText =
+        deadline === 0n ? "There's no deadline" : formatTimestamp(deadline);
+      setWithdrawData(deadlineText, deadlineText, "deadline");
+    }
+
+    const owner = await contract.owner();
+    setWithdrawData(shortenAddress(owner), owner, "owner");
+
+    const other_party = await contract.otherParty();
+    setWithdrawData(shortenAddress(other_party), other_party, "other_party");
+
+    const hash_key = await contract.hashKey();
+    setWithdrawData(shortenAddress(hash_key), hash_key, "hash_key");
+
+    // token info
+    const token_addr = await contract.token();
+    setWithdrawData(shortenAddress(token_addr), token_addr, "token_addr");
+
+    const tokenContract = new ethers.Contract(token_addr, tokenABI, signer);
+
+    const token_id = (await contract.id()).toString();
+    console.log("Token ID:", token_id);
+    setWithdrawData(token_id, token_id, "token_id");
+
+    const token_amount = (await contract.value()).toString();
+    console.log("Token Amount:", token_amount);
+    setWithdrawData(token_amount, token_amount, "token_amount");
+  };
+</script>

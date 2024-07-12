@@ -1,0 +1,34 @@
+<script>
+  const abi = [
+    "function confirmSwap(string _key)",
+    "function createSwap(address _token, address _otherParty, uint256 _value, uint256 _id, bytes32 _hashKey, uint256 _deadline, bool _flag)",
+    "function deadline() view returns (uint256)",
+    "function hashKey() view returns (bytes32)",
+    "function id() view returns (uint256)",
+    "function key() view returns (string)",
+    "function myAddr() view returns (address)",
+    "function onERC1155BatchReceived(address, address, uint256[], uint256[], bytes) returns (bytes4)",
+    "function onERC1155Received(address, address, uint256, uint256, bytes) returns (bytes4)",
+    "function otherParty() view returns (address)",
+    "function owner() view returns (address)",
+    "function token() view returns (address)",
+    "function transferOwnership(address newOwner)",
+    "function value() view returns (uint256)",
+    "function withdrawal()",
+  ];
+  const tokenABI = [
+    "function balanceOf(address account, uint256 id) view returns (uint256)",
+    "function balanceOfBatch(address[] accounts, uint256[] ids) view returns (uint256[])",
+    "function isApprovedForAll(address account, address operator) view returns (bool)",
+    "function mint(address account, uint256 id, uint256 amount)",
+    "function mintBatch(address to, uint256[] ids, uint256[] amounts)",
+    "function owner() view returns (address)",
+    "function renounceOwnership()",
+    "function safeBatchTransferFrom(address from, address to, uint256[] ids, uint256[] values, bytes data)",
+    "function safeTransferFrom(address from, address to, uint256 id, uint256 value, bytes data)",
+    "function setApprovalForAll(address operator, bool approved)",
+    "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+    "function transferOwnership(address newOwner)",
+    "function uri(uint256) view returns (string)",
+  ];
+</script>

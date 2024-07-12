@@ -1,0 +1,282 @@
+<form
+  class="flex flex-col gap-4 relative w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+  id="create_swap_form"
+>
+  <p class="text-green-500 hidden" id="can_create_swap">
+    You can create a new swap
+  </p>
+  <p class="text-red-500 hidden" id="cant_create_swap">
+    You can't create a new swap, wait for the current one to finish
+  </p>
+
+  <div class="flex items-center mb-2">
+    <input
+      class="text-blue-600 border-gray-200 rounded cursor-pointer shrink-0 mt-0-5 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+      id="flag"
+      name="flag"
+      type="checkbox"
+      value=""
+    />
+    <label
+      class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+      for="flag"
+      >I am initiator of the swap</label
+    >
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="token_addr"
+      >Token address</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="token_addr"
+      name="token_addr"
+      placeholder="Type here"
+      required
+      type="text"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the address of the ERC20 token you want to swap.
+    </p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="token_id"
+      >Token ID</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="token_id"
+      name="token_id"
+      placeholder="Type here"
+      required
+      type="number"
+      min="0"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the ID of the NFT you want to swap.
+    </p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="token_amount"
+      >Token amount</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="token_amount"
+      name="token_amount"
+      placeholder="Type here"
+      required
+      type="number"
+      min="0"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the amount of tokens to swap
+    </p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="other_party"
+      >Other party</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="other_party"
+      name="other_party"
+      placeholder="Type here"
+      required
+      type="text"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the address of the person who will be confirming the swap.
+    </p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="key"
+      >Key</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="key"
+      name="key"
+      placeholder="Type here"
+      required
+      type="text"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the key with which you can make a swap.
+    </p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="deadline"
+      >Deadline</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="deadline"
+      name="deadline"
+      placeholder="Type here"
+      readonly
+      required
+      type="text"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Select the date during which you can make the swap.
+    </p>
+  </div>
+
+  <button
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+    type="submit"
+  >
+    Submit
+  </button>
+</form>
+
+<!--Add datepicker-->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    new AirDatepicker("#deadline", {
+      timepicker: true,
+      position: "top right",
+      minDate: dateFns.addHours(new Date(), 0),
+    });
+  });
+</script>
+
+<!--SET SWAP ACCESSIBILITY-->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const can_create = document.getElementById("can_create_swap");
+    const cant_create = document.getElementById("cant_create_swap");
+
+    setInterval(async () => {
+      if (contract) {
+        const deadline = await contract.deadline();
+
+        can_create.classList.add("hidden");
+        cant_create.classList.add("hidden");
+
+        if (deadline === 0n) {
+          can_create.classList.remove("hidden");
+        } else {
+          cant_create.classList.remove("hidden");
+        }
+      }
+    }, 1000);
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const create_swap_form = document.getElementById("create_swap_form");
+    create_swap_form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = new FormData(create_swap_form);
+
+      const flag = data.get("flag") === "";
+      const other_party = data.get("other_party");
+      const token_id = data.get("token_id");
+      let key = data.get("key");
+      const deadline = convertToTimestamp(data.get("deadline"));
+      const token_addr = data.get("token_addr");
+      const token_amount = data.get("token_amount");
+
+      if (!other_party || !token_id || !key || !deadline || !token_addr) {
+        notyf.error("Please fill all fields!");
+        return;
+      }
+
+      if (!ethers.isAddress(other_party)) {
+        notyf.error("Invalid address of the other party");
+        return;
+      } else if (!ethers.isAddress(token_addr)) {
+        notyf.error("Invalid address of the token");
+        return;
+      }
+
+      if (flag) {
+        key = ethers.keccak256(ethers.toUtf8Bytes(key));
+      } else {
+        if (!ethers.isBytesLike(key)) {
+          notyf.error(
+            'Wrong key, you need to get a key in the format "0x..."!'
+          );
+          return;
+        }
+      }
+
+      let now = moment().add(3, "hours").unix();
+
+      console.log("Deadline timestamp", deadline);
+      console.log("Deadline now", now);
+      console.log("Initiator", flag);
+
+      if (deadline < now) {
+        notyf.error("The deadline should start no earlier than in an hour!");
+        return;
+      }
+
+      addOverlay("create_swap_form");
+
+      try {
+        const tokenContract = new ethers.Contract(token_addr, tokenABI, signer);
+
+        const balance = await tokenContract.balanceOf(wallet, token_id);
+        console.log("Balance", balance);
+
+        if (balance < token_amount) {
+          notyf.error("Insufficient balance!");
+          return;
+        }
+
+        const isApprovedForAll = await tokenContract.isApprovedForAll(
+          wallet,
+          contract_address
+        );
+
+        if (!isApprovedForAll) {
+          const tx_approve = await tokenContract.setApprovalForAll(
+            contract_address,
+            true
+          );
+
+          await tx_approve.wait();
+          notyf.success("Success approve!");
+        }
+
+        const tx_create_swap = await contract.createSwap(
+          token_addr,
+          other_party,
+          token_amount,
+          token_id,
+          key,
+          deadline,
+          flag
+        );
+
+        await tx_create_swap.wait();
+        create_swap_form.reset();
+        notyf.success("Success swap!");
+        setFormInfo();
+      } catch (e) {
+        const reason = extractErrorReason(e);
+        console.log(e);
+        console.log(reason);
+        notyf.error("Failed to create a swap! " + reason);
+      } finally {
+        removeOverlay("create_swap_form");
+      }
+    });
+  });
+</script>
