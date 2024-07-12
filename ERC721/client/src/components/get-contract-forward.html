@@ -1,0 +1,38 @@
+<form class="hidden" id="form-myAddr">
+  <div>
+    <button
+        class="btn btn-primary mt-2"
+        data-form-name="myAddr"
+        id="read-btn"
+        type="button"
+    >
+      Read
+    </button>
+  </div>
+  <div>
+    <p>Response:</p>
+    <div>
+      :
+      <span
+          data-field-type="address"
+          data-form-name="myAddr"
+          id="form-output-myAddr-0"
+      >address</span
+      >
+      <br/>
+    </div>
+  </div>
+</form>
+
+<script>
+  const btn = document.getElementById("read-btn")
+  if (btn) {
+    setTimeout(() => {
+      btn.click()
+    }, 1000)
+
+    setTimeout(() => {
+      console.log("contract address: ", document.getElementById("form-output-myAddr-0"))
+    }, 2100)
+  }
+</script>

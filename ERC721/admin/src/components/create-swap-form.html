@@ -44,6 +44,25 @@
   <div>
     <label
       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="token_id"
+      >Token ID</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="token_id"
+      name="token_id"
+      placeholder="Type here"
+      required
+      type="number"
+      min="0"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the ID of the NFT you want to swap.
+    </p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
       for="other_party"
       >Other party</label
     >
@@ -57,26 +76,6 @@
     />
     <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
       Enter the address of the person who will be confirming the swap.
-    </p>
-  </div>
-  <div>
-    <label
-      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      for="swap_amount"
-      >Swap amount</label
-    >
-    <input
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      id="swap_amount"
-      name="swap_amount"
-      placeholder="Type here"
-      required
-      type="number"
-      min="0"
-      step="0.000001"
-    />
-    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-      Enter the amount of tokens you wish to swap.
     </p>
   </div>
   <div>
@@ -168,12 +167,12 @@
 
       const flag = data.get("flag") === "";
       const other_party = data.get("other_party");
-      const swap_amount = data.get("swap_amount").toString();
+      const token_id = data.get("token_id");
       let key = data.get("key");
       const deadline = convertToTimestamp(data.get("deadline"));
       const token_addr = data.get("token_addr");
 
-      if (!other_party || !swap_amount || !key || !deadline || !token_addr) {
+      if (!other_party || !token_id || !key || !deadline || !token_addr) {
         notyf.error("Please fill all fields!");
         return;
       }
@@ -213,52 +212,24 @@
       try {
         const tokenContract = new ethers.Contract(token_addr, tokenABI, signer);
         console.log(tokenContract);
-        const decimals = Number(await tokenContract.decimals());
-        console.log(decimals);
 
-        const swap_value_bigInt =
-          BigInt(swap_amount.replace(".", "")) *
-          BigInt(
-            10 **
-              (decimals -
-                (swap_amount.split(".")[1]
-                  ? swap_amount.split(".")[1].length
-                  : 0))
-          );
-
-        const balance = await tokenContract.balanceOf(wallet);
-        console.log("Balance", balance);
-
-        if (balance < swap_value_bigInt) {
-          notyf.error("Insufficient balance!");
-          return;
-        }
-
-        const current_allowance = await tokenContract.allowance(
-          wallet,
-          contract_address
+        let tx_approve = await tokenContract.approve(
+          contract_address,
+          token_id
         );
 
-        if (current_allowance < swap_value_bigInt) {
-          const tx = await tokenContract.approve(
-            contract_address,
-            swap_value_bigInt
-          );
+        await tx_approve.wait();
 
-          await tx.wait();
-          notyf.success("The approve was successful!");
-        }
-
-        const tx = await contract.createSwap(
+        const tx_create_swap = await contract.createSwap(
           token_addr,
           other_party,
-          swap_value_bigInt,
+          token_id,
           key,
           deadline,
           flag
         );
 
-        await tx.wait();
+        await tx_create_swap.wait();
         create_swap_form.reset();
         notyf.success("Success swap!");
         setFormInfo();

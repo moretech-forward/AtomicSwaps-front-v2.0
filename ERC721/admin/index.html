@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link href="/vite.svg" rel="icon" type="image/svg+xml" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Atomic Swap</title>
+    <link
+      href="
+https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.min.css
+"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link href="src/index.scss" rel="stylesheet" />
+  </head>
+  <body>
+    <load src="src/components/preload.html" />
+    <load src="src/components/get-contract-forward.html" />
+
+    <div class="fixed top-6 right-8 z-10">
+      <load src="src/components/theme-button.html" />
+    </div>
+
+    <main class="flex items-center flex-col gap-8 pt-20" data-tabs-container>
+      <p class="text-2xl font-medium">Atomic ERC20 Swaps - Admin</p>
+      <load src="src/components/read-docs.html" />
+
+      <div class="mt-2" data-tabs-nav>
+        <button class="active" data-tab-target="create-swap" type="button">
+          Create Swap
+        </button>
+        <button data-tab-target="withdraw" type="button">Withdraw</button>
+      </div>
+      <div id="default-tab-content">
+        <div data-tab-content="create-swap">
+          <load src="src/components/create-swap-form.html" />
+        </div>
+        <div class="hidden" data-tab-content="withdraw">
+          <load src="src/components/withdraw-form.html" />
+        </div>
+      </div>
+    </main>
+
+    <load src="src/js/routing.html" />
+    <script
+      crossorigin="anonymous"
+      integrity="sha512-yhbfKyAjj1d7DG9IdorCr13o6VVoaRDdYww3u9oRDbOiMw7UkhI607wB54fXUxA9s22Qr8ltpiv18rSe7QifEA=="
+      referrerpolicy="no-referrer"
+      src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.0/ethers.umd.min.js"
+    ></script>
+    <load src="src/js/utils.html" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@3.6.0/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <!--инициализация уведомляшек-->
+    <script>
+      const notyf = new Notyf({
+        position: { x: "right", y: "top" },
+        dismissible: true,
+        duration: 5000,
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+    <load src="src/js/theme.html" />
+    <load src="src/js/ethers.html" />
+  </body>
+</html>
