@@ -26,6 +26,28 @@
   <div>
     <label
       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      for="token_addr"
+      >Token address</label
+    >
+    <input
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      id="token_addr"
+      name="token_addr"
+      placeholder="Type here"
+      required
+      type="text"
+    />
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Enter the address of the ERC20 token you want to swap.
+    </p>
+    <p
+      class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+      id="token_info"
+    ></p>
+  </div>
+  <div>
+    <label
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
       for="other_party"
       >Other party</label
     >
@@ -150,17 +172,21 @@
 
       const flag = data.get("flag") === "";
       const other_party = data.get("other_party");
-      const swap_amount = ethers.parseEther(data.get("swap_amount").toString());
+      const swap_amount = data.get("swap_amount").toString();
       let key = data.get("key");
       const deadline = convertToTimestamp(data.get("deadline"));
+      const token_addr = data.get("token_addr");
 
-      if (!other_party || !swap_amount || !key || !deadline) {
+      if (!other_party || !swap_amount || !key || !deadline || !token_addr) {
         notyf.error("Please fill all fields!");
         return;
       }
 
       if (!ethers.isAddress(other_party)) {
         notyf.error("Invalid address of the other party");
+        return;
+      } else if (!ethers.isAddress(token_addr)) {
+        notyf.error("Invalid address of the token");
         return;
       }
 
@@ -189,15 +215,51 @@
       addOverlay("create_swap_form");
 
       try {
+        const tokenContract = new ethers.Contract(token_addr, tokenABI, signer);
+        console.log(tokenContract);
+        const decimals = Number(await tokenContract.decimals());
+        console.log(decimals);
+
+        const swap_value_bigInt =
+          BigInt(swap_amount.replace(".", "")) *
+          BigInt(
+            10 **
+              (decimals -
+                (swap_amount.split(".")[1]
+                  ? swap_amount.split(".")[1].length
+                  : 0))
+          );
+
+        const balance = await tokenContract.balanceOf(wallet);
+        console.log("Balance", balance);
+
+        if (balance < swap_value_bigInt) {
+          notyf.error("Insufficient balance!");
+          return;
+        }
+
+        const current_allowance = await tokenContract.allowance(
+          wallet,
+          contract_address
+        );
+
+        if (current_allowance < swap_value_bigInt) {
+          const tx = await tokenContract.approve(
+            contract_address,
+            swap_value_bigInt
+          );
+
+          await tx.wait();
+          notyf.success("The approve was successful!");
+        }
+
         const tx = await contract.createSwap(
+          token_addr,
           other_party,
-          swap_amount,
+          swap_value_bigInt,
           key,
           deadline,
-          flag,
-          {
-            value: swap_amount,
-          }
+          flag
         );
 
         await tx.wait();
