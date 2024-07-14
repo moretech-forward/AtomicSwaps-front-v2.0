@@ -22,13 +22,11 @@
     setFormInfo();
   };
 
-  const initForwardApp = async () => {
-    contract_address = document.getElementById(
-      "form-output-myAddr-0"
-    ).innerHTML;
+  const initForwardApp = async (address) => {
+    contract_address = address
     if (window.parent.ethereum == null) {
       console.log("MetaMask not installed; using read-only defaults");
-      provider = new ethers.JsonRpcProvider();
+      notyf.error("Please install MetaMask or reload page!")
     } else {
       provider = new ethers.BrowserProvider(window.parent.ethereum);
     }
@@ -37,13 +35,4 @@
 
     setFormInfo();
   };
-
-  document.addEventListener("DOMContentLoaded", () => {
-    initApp(); // comment before build for forward
-
-    // if forward
-    setTimeout(() => {
-      //initForwardApp()
-    }, 3000);
-  });
 </script>
